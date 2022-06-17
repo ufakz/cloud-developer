@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const feedItemMocks = [{\n  id: 0,\n  url: '/assets/mock/xander0.jpg',\n  caption: 'Such a cute pup'\n}, {\n  id: 0,\n  url: '/assets/mock/xander1.jpg',\n  caption: 'Who\\'s a good boy?'\n}, {\n  id: 0,\n  url: '/assets/mock/xander2.jpg',\n  caption: 'Majestic.'\n}];","map":null,"metadata":{},"sourceType":"module"}
