@@ -1,4 +1,5 @@
 import express from 'express';
+import { Application, Request, Response, NextFunction } from "express";
 import bodyParser from 'body-parser';
 import { filterImageFromURL, deleteLocalFiles } from './util/util';
 import fs from 'fs';
@@ -6,10 +7,10 @@ import fs from 'fs';
 (async () => {
 
   // Init the Express application
-  const app = express();
+  const app: Application = express();
 
   // Set the network port
-  const port = process.env.PORT || 8082;
+  const port: string = process.env.PORT || "8082";
 
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
@@ -31,23 +32,23 @@ import fs from 'fs';
   /**************************************************************************** */
 
   //! END @TODO1
-  app.get("/filteredimage", async (req, res) => {
-    const folderLoc = `${process.cwd()}/src/util/tmp`
-    const imageUrl = req.query.image_url
+  app.get("/filteredimage", async (req: Request, res: Response, next: NextFunction) => {
+    const folderLoc: string = `${process.cwd()}/src/util/tmp`
+    const imageUrl: string = req.query.image_url as string;
 
     if (!imageUrl) {
       res.status(401).send("Image URL is required")
     }
 
     try {
-      const filteredImage = await filterImageFromURL(imageUrl.toString())
+      const filteredImage: string = await filterImageFromURL(imageUrl) as string;
       res.status(200).sendFile(filteredImage)
     } catch (e) {
       res.status(500).send(`error filtering image: ${e}`)
     }
 
     if (fs.existsSync(folderLoc)) {
-      fs.readdir(folderLoc, (err, filesList) => {
+      fs.readdir(folderLoc, (err: Error, filesList: Array<string>) => {
         if (err) return err;
         deleteLocalFiles(folderLoc, filesList)
       })
@@ -57,7 +58,7 @@ import fs from 'fs';
 
   // Root Endpoint
   // Displays a simple message to the user
-  app.get("/", async (req, res) => {
+  app.get("/", async (req: Request, res: Response, next: NextFunction) => {
     res.send("try GET /filteredimage?image_url={{}}")
   });
 
